@@ -63,8 +63,8 @@ export default function Contact() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-slate-100"
-        style={{ background: 'linear-gradient(160deg,#eff6ff 0%,#eef2ff 60%,#f8faff 100%)' }}>
+      <section className="relative overflow-hidden border-b border-subtle"
+        style={{ background: 'linear-gradient(160deg,var(--bg-3) 0%,var(--bg) 60%,var(--bg) 100%)' }}>
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#6366f1,transparent 70%)' }} />
@@ -72,12 +72,12 @@ export default function Contact() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
             <span className="label">Get in touch</span>
             <h1 className="mt-4 heading-lg">Let's work together</h1>
-            <p className="mt-5 text-[17px] text-slate-500 max-w-lg leading-relaxed">Tell us about your project. We respond within 24 hours.</p>
+            <p className="mt-5 text-[17px] text-muted max-w-lg leading-relaxed">Tell us about your project. We respond within 24 hours.</p>
           </motion.div>
         </div>
       </section>
 
-      <section className="section py-24" style={{ background: '#fff' }}>
+      <section className="section py-24" style={{ background: 'var(--bg-2)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="lg:col-span-2 space-y-8">
@@ -87,10 +87,10 @@ export default function Contact() {
               { icon: '⏱️', label: 'Response time', value: 'Within 24 hours' },
             ].map(({ icon, label, value }) => (
               <div key={label} className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 border border-slate-100 bg-slate-50">{icon}</div>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 border border-subtle bg-surface">{icon}</div>
                 <div>
                   <p className="text-[13px] font-bold uppercase tracking-wider mb-1 text-indigo-500">{label}</p>
-                  <p className="text-[16px] text-slate-700">{value}</p>
+                  <p className="text-[16px]" style={{ color: 'var(--text)' }}>{value}</p>
                 </div>
               </div>
             ))}
@@ -98,9 +98,9 @@ export default function Contact() {
             <div className="card-gradient p-7">
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse-slow" />
-                <span className="text-[16px] font-semibold text-slate-800">Currently available</span>
+                <span className="text-[16px] font-semibold" style={{ color: 'var(--text)' }}>Currently available</span>
               </div>
-              <p className="text-[15px] text-slate-500 leading-relaxed">We're taking on new projects. Typical engagement starts within 1–2 weeks.</p>
+              <p className="text-[15px] text-muted leading-relaxed">We're taking on new projects. Typical engagement starts within 1–2 weeks.</p>
             </div>
 
             <div>
@@ -110,7 +110,7 @@ export default function Contact() {
                   <li key={i} className="flex items-start gap-4">
                     <span className="w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5 text-white"
                       style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>{i + 1}</span>
-                    <span className="text-[15px] text-slate-500">{step}</span>
+                    <span className="text-[15px] text-muted">{step}</span>
                   </li>
                 ))}
               </ol>
@@ -127,8 +127,8 @@ export default function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-[1.4rem] font-semibold text-slate-800">Message sent!</h3>
-                <p className="mt-3 text-[15px] text-slate-500 max-w-xs mx-auto leading-relaxed">Thanks for reaching out. We'll be in touch within 24 hours.</p>
+                <h3 className="text-[1.4rem] font-semibold" style={{ color: 'var(--text)' }}>Message sent!</h3>
+                <p className="mt-3 text-[15px] text-muted max-w-xs mx-auto leading-relaxed">Thanks for reaching out. We'll be in touch within 24 hours.</p>
                 <button onClick={() => setStatus('idle')} className="mt-8 text-[15px] text-indigo-500 hover:text-indigo-700 transition-colors underline underline-offset-4">
                   Send another message
                 </button>
@@ -177,7 +177,7 @@ export default function Contact() {
                     </>
                   )}
                 </button>
-                <p className="text-center text-[13px] text-slate-400">No spam, ever. We'll only use your info to respond to your message.</p>
+                <p className="text-center text-[13px] text-faint">No spam, ever. We'll only use your info to respond to your message.</p>
               </form>
             )}
           </motion.div>

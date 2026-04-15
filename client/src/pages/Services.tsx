@@ -86,8 +86,8 @@ export default function Services() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-slate-100"
-        style={{ background: 'linear-gradient(160deg,#eff6ff 0%,#eef2ff 60%,#f8faff 100%)' }}>
+      <section className="relative overflow-hidden border-b border-subtle"
+        style={{ background: 'linear-gradient(160deg,var(--bg-3) 0%,var(--bg) 60%,var(--bg) 100%)' }}>
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#6366f1,transparent 70%)' }} />
@@ -101,7 +101,7 @@ export default function Services() {
                 the modern web.
               </span>
             </h1>
-            <p className="mt-6 text-[17px] text-slate-500 max-w-xl leading-relaxed">
+            <p className="mt-6 text-[17px] text-muted max-w-xl leading-relaxed">
               From pixel-perfect interfaces to on-chain protocols and immersive 3D — we cover every layer of the modern digital product stack.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -125,8 +125,8 @@ export default function Services() {
 
       {/* Service Sections */}
       {services.map((s, si) => (
-        <section key={s.id} id={s.id} className="py-32 border-b border-slate-100"
-          style={{ background: si % 2 === 1 ? '#f8faff' : '#fff' }}>
+        <section key={s.id} id={s.id} className="py-32 border-b border-subtle"
+          style={{ background: si % 2 === 1 ? 'var(--bg-3)' : 'var(--bg-2)' }}>
           <div className="section">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
               <motion.div initial={{ opacity: 0, x: si % 2 === 0 ? -24 : 24 }}
@@ -138,11 +138,11 @@ export default function Services() {
                     style={{ background: s.gradient, boxShadow: `0 4px 28px -4px ${s.glowColor}` }}>
                     {s.icon}
                   </div>
-                  <span className="text-[13px] font-bold tracking-widest text-slate-400">{s.order}</span>
+                  <span className="text-[13px] font-bold tracking-widest text-muted">{s.order}</span>
                 </div>
                 <span className="text-[13px] font-bold tracking-[0.18em] uppercase" style={{ color: s.accentColor }}>{s.label}</span>
-                <h2 className="mt-3 text-[2rem] md:text-[2.4rem] font-semibold tracking-tight leading-tight text-slate-900">{s.tagline}</h2>
-                <p className="mt-5 text-[16px] text-slate-500 leading-relaxed">{s.description}</p>
+                <h2 className="mt-3 text-[2rem] md:text-[2.4rem] font-semibold tracking-tight leading-tight heading-md" style={{ fontSize: 'clamp(1.6rem,3vw,2.4rem)' }}>{s.tagline}</h2>
+                <p className="mt-5 text-[16px] text-muted leading-relaxed">{s.description}</p>
                 <div className="mt-7 flex flex-wrap gap-2">{s.techStack.map((t) => <TechBadge key={t} label={t} />)}</div>
                 <Link to="/contact" className="mt-9 inline-flex items-center gap-2 text-[15px] font-semibold hover:opacity-75 transition-opacity" style={{ color: s.accentColor }}>
                   Start this project
@@ -157,15 +157,15 @@ export default function Services() {
                 {s.offerings.map((o, oi) => (
                   <motion.div key={o.title} custom={oi} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                     className="rounded-2xl p-7 border transition-all duration-200"
-                    style={{ background: s.cardBg, borderColor: s.borderColor }}
+                    style={{ background: 'var(--card-bg)', borderColor: s.borderColor }}
                     onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 4px 24px -4px ${s.glowColor}`; e.currentTarget.style.borderColor = s.accentColor + '88'; }}
                     onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = s.borderColor; }}>
                     <div className="w-8 h-8 rounded-xl mb-5 flex items-center justify-center border"
-                      style={{ background: '#fff', borderColor: s.borderColor }}>
+                      style={{ background: 'var(--bg-2)', borderColor: s.borderColor }}>
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: s.accentColor }} />
                     </div>
-                    <h4 className="font-semibold text-[15px] mb-2 text-slate-800">{o.title}</h4>
-                    <p className="text-[14px] text-slate-500 leading-relaxed">{o.body}</p>
+                    <h4 className="font-semibold text-[15px] mb-2" style={{ color: 'var(--text)' }}>{o.title}</h4>
+                    <p className="text-[14px] text-muted leading-relaxed">{o.body}</p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -175,26 +175,26 @@ export default function Services() {
       ))}
 
       {/* Process */}
-      <section className="py-32 border-b border-slate-100" style={{ background: '#f8faff' }}>
+      <section className="py-32 border-b border-subtle" style={{ background: 'var(--bg-3)' }}>
         <div className="section">
           <div className="text-center mb-16">
             <span className="label">How it works</span>
             <h2 className="mt-4 heading-md">Our process</h2>
-            <p className="mt-5 text-[16px] text-slate-500 max-w-md mx-auto leading-relaxed">Every engagement follows the same proven framework — no surprises, just results.</p>
+            <p className="mt-5 text-[16px] text-muted max-w-md mx-auto leading-relaxed">Every engagement follows the same proven framework — no surprises, just results.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-px rounded-2xl overflow-hidden"
             style={{ background: 'linear-gradient(135deg,#bfdbfe,#c7d2fe)' }}>
             {process.map(({ step, title, body }, i) => (
               <motion.div key={step} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-                className="p-9 text-center transition-colors" style={{ background: '#fff' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#eff6ff')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#fff')}>
+                className="p-9 text-center transition-colors" style={{ background: 'var(--bg-2)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-3)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--bg-2)')}>
                 <span className="text-[13px] font-bold tracking-widest"
                   style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   {step}
                 </span>
-                <h4 className="mt-3 font-semibold text-[16px] text-slate-800">{title}</h4>
-                <p className="mt-2 text-[14px] text-slate-500 leading-relaxed">{body}</p>
+                <h4 className="mt-3 font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{title}</h4>
+                <p className="mt-2 text-[14px] text-muted leading-relaxed">{body}</p>
               </motion.div>
             ))}
           </div>
@@ -202,12 +202,12 @@ export default function Services() {
       </section>
 
       {/* FAQ */}
-      <section className="section py-32" style={{ background: '#fff' }}>
+      <section className="section py-32" style={{ background: 'var(--bg-2)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div>
             <span className="label">FAQ</span>
             <h2 className="mt-4 heading-md">Common questions</h2>
-            <p className="mt-5 text-[16px] text-slate-500 leading-relaxed">
+            <p className="mt-5 text-[16px] text-muted leading-relaxed">
               Still have questions?{' '}
               <Link to="/contact" className="font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">Drop us a message.</Link>
             </p>
@@ -215,8 +215,8 @@ export default function Services() {
           <div className="lg:col-span-2 space-y-4">
             {faqs.map((faq, i) => (
               <motion.div key={i} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="card p-7">
-                <h4 className="font-semibold text-[16px] mb-3 text-slate-800">{faq.q}</h4>
-                <p className="text-[15px] text-slate-500 leading-relaxed">{faq.a}</p>
+                <h4 className="font-semibold text-[16px] mb-3" style={{ color: 'var(--text)' }}>{faq.q}</h4>
+                <p className="text-[15px] text-muted leading-relaxed">{faq.a}</p>
               </motion.div>
             ))}
           </div>

@@ -72,7 +72,7 @@ function ProjectImage({ src, alt, gradient, letter, bgGlow }: {
   const [error, setError] = useState(false);
   return (
     <div className="relative w-full h-56 overflow-hidden bg-slate-50"
-      style={{ background: `linear-gradient(135deg,${bgGlow},#f8faff 80%)` }}>
+      style={{ background: `linear-gradient(135deg,${bgGlow},var(--bg-3) 80%)` }}>
       <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
         style={{ opacity: loaded && !error ? 0 : 1 }}>
         <span className="text-[6rem] font-black select-none leading-none"
@@ -143,7 +143,7 @@ export default function Projects() {
       </section>
 
       {/* Grid */}
-      <section className="py-24" style={{ background: '#f8faff' }}>
+      <section className="py-24" style={{ background: 'var(--bg-3)' }}>
         <div className="section">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((p, i) => (
@@ -152,9 +152,9 @@ export default function Projects() {
                 // @ts-ignore
                 variants={fadeUp}
                 className="group relative rounded-3xl overflow-hidden border cursor-pointer transition-all duration-300"
-                style={{ background: '#fff', borderColor: '#e2e8f0', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}
+                style={{ background: 'var(--card-bg)', borderColor: 'var(--card-border)', boxShadow: 'var(--card-shadow)' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#bfdbfe'; e.currentTarget.style.boxShadow = '0 8px 32px -8px rgba(99,102,241,0.18)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 1px 8px rgba(0,0,0,0.05)'; }}>
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.boxShadow = 'var(--card-shadow)'; }}>
 
                 <div className="relative">
                   <ProjectImage src={p.image} alt={p.name}
@@ -185,7 +185,7 @@ export default function Projects() {
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div>
                       <p className="text-[12px] font-semibold uppercase tracking-widest mb-1" style={{ color: p.accentColor }}>{p.category}</p>
-                      <h3 className="text-[18px] font-bold text-slate-800">{p.name}</h3>
+                      <h3 className="text-[18px] font-bold" style={{ color: 'var(--text)' }}>{p.name}</h3>
                     </div>
                     <a href={p.link} target="_blank" rel="noopener noreferrer"
                       className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border transition-all hover:scale-105"
@@ -196,7 +196,7 @@ export default function Projects() {
                     </a>
                   </div>
 
-                  <p className="text-[14px] text-slate-500 leading-relaxed mb-5">{p.description}</p>
+                  <p className="text-[14px] text-muted leading-relaxed mb-5">{p.description}</p>
 
                   <div className="flex flex-wrap gap-1.5">
                     {p.techStack.map((t) => (
@@ -214,7 +214,7 @@ export default function Projects() {
       </section>
 
       {/* CTA */}
-      <section className="py-24" style={{ background: '#f8faff' }}>
+      <section className="py-24" style={{ background: 'var(--bg-3)' }}>
         <div className="section">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}

@@ -1,32 +1,61 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../context/ThemeContext';
 import Logo from './Logo';
 
-const navLinks = [
-  { to: '/services', label: 'Services' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/about',    label: 'About' },
-  { to: '/contact',  label: 'Contact' },
+const LANGS = [
+  { code: 'en', label: 'EN', flag: '🇬🇧' },
+  { code: 'tr', label: 'TR', flag: '🇹🇷' },
+  { code: 'de', label: 'DE', flag: '🇩🇪' },
 ];
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const { theme, toggle } = useTheme();
+  const isDark = theme === 'dark';
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 12);
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
-  useEffect(() => { setOpen(false); }, [location]);
+  useEffect(() => { setOpen(false); setLangOpen(false); }, [location]);
+
+  const navLinks = [
+    { to: '/services', label: t('nav.services') },
+    { to: '/projects', label: t('nav.projects') },
+    { to: '/about',    label: t('nav.about') },
+    { to: '/contact',  label: t('nav.contact') },
+  ];
+
+  const currentLang = LANGS.find(l => l.code === i18n.language) || LANGS[0];
+
+  const changeLang = (code: string) => {
+    i18n.changeLanguage(code);
+    localStorage.setItem('lang', code);
+    setLangOpen(false);
+  };
+
+  const navStyle = (isActive: boolean) => ({
+    color: isActive ? '#6366f1' : 'var(--text-muted)',
+    background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent',
+  });
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#f8faff' }}>
-      <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl border-b' : ''}`}
-        style={scrolled ? { background: 'rgba(248,250,255,0.95)', borderColor: '#e2e8f0', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' } : {}}>
-        <nav className="section h-[68px] flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5 group">
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl border-b' : ''}`}
+        style={scrolled ? { background: 'var(--nav-bg)', borderColor: 'var(--border)', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' } : {}}
+      >
+        <nav className="section h-[68px] flex items-center justify-between gap-4">
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
             <span className="group-hover:scale-105 transition-transform duration-200 inline-flex drop-shadow-sm">
               <Logo size={36} />
             </span>
@@ -36,51 +65,119 @@ export default function Layout() {
             </span>
           </Link>
 
+          {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-1">
             {navLinks.map(({ to, label }) => (
               <li key={to}>
                 <NavLink to={to}
                   className={({ isActive }) => `px-4 py-2.5 text-[15px] rounded-xl transition-all duration-150 ${isActive ? 'font-semibold' : ''}`}
-                  style={({ isActive }) => ({ color: isActive ? '#6366f1' : '#64748b', background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent' })}>
+                  style={({ isActive }) => navStyle(isActive)}>
                   {label}
                 </NavLink>
               </li>
             ))}
           </ul>
 
-          <Link to="/contact" className="hidden md:inline-flex btn-primary !px-5 !py-2.5 !text-[14px]">
-            Get in touch
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+          {/* Right controls */}
+          <div className="flex items-center gap-2">
 
-          <button className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl transition-colors"
-            style={{ background: open ? 'rgba(99,102,241,0.08)' : 'transparent' }}
-            onClick={() => setOpen(!open)} aria-label="Toggle menu">
-            <span className={`block h-[1.5px] bg-slate-700 transition-all duration-200 origin-center ${open ? 'rotate-45 translate-y-[4px] w-5' : 'w-5'}`} />
-            <span className={`block h-[1.5px] bg-slate-700 transition-all duration-200 ${open ? 'opacity-0 w-0' : 'w-3.5'}`} />
-            <span className={`block h-[1.5px] bg-slate-700 transition-all duration-200 origin-center ${open ? '-rotate-45 -translate-y-[4px] w-5' : 'w-5'}`} />
-          </button>
+            {/* Language switcher */}
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => setLangOpen(v => !v)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[13px] font-semibold transition-all duration-150 border"
+                style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+                <span>{currentLang.flag}</span>
+                <span>{currentLang.label}</span>
+                <svg className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-full mt-2 rounded-xl border overflow-hidden shadow-lg z-50 min-w-[100px]"
+                  style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+                  {LANGS.map(l => (
+                    <button key={l.code} onClick={() => changeLang(l.code)}
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium transition-colors text-left"
+                      style={{
+                        background: i18n.language === l.code ? 'rgba(99,102,241,0.1)' : 'transparent',
+                        color: i18n.language === l.code ? '#6366f1' : 'var(--text-muted)',
+                      }}>
+                      <span>{l.flag}</span><span>{l.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Theme toggle */}
+            <button onClick={toggle}
+              className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-150 hover:scale-105"
+              style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+              aria-label="Toggle theme">
+              {isDark ? (
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                </svg>
+              ) : (
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ width: 18, height: 18 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+
+            {/* CTA */}
+            <Link to="/contact" className="hidden md:inline-flex btn-primary !px-5 !py-2.5 !text-[14px]">
+              {t('nav.getInTouch')}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+
+            {/* Hamburger */}
+            <button className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl transition-colors"
+              style={{ background: open ? 'rgba(99,102,241,0.08)' : 'transparent' }}
+              onClick={() => setOpen(!open)} aria-label="Toggle menu">
+              <span className={`block h-[1.5px] transition-all duration-200 origin-center ${open ? 'rotate-45 translate-y-[4px] w-5' : 'w-5'}`} style={{ background: 'var(--text)' }} />
+              <span className={`block h-[1.5px] transition-all duration-200 ${open ? 'opacity-0 w-0' : 'w-3.5'}`} style={{ background: 'var(--text)' }} />
+              <span className={`block h-[1.5px] transition-all duration-200 origin-center ${open ? '-rotate-45 -translate-y-[4px] w-5' : 'w-5'}`} style={{ background: 'var(--text)' }} />
+            </button>
+          </div>
         </nav>
 
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-80' : 'max-h-0'}`}>
-          <div className="px-6 py-5 flex flex-col gap-1 border-t" style={{ background: 'rgba(248,250,255,0.98)', borderColor: '#e2e8f0' }}>
+        {/* Mobile menu */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-96' : 'max-h-0'}`}>
+          <div className="px-6 py-5 flex flex-col gap-1 border-t" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             {navLinks.map(({ to, label }) => (
               <NavLink key={to} to={to}
                 className={({ isActive }) => `px-4 py-3 text-[15px] rounded-xl transition-colors ${isActive ? 'font-semibold' : ''}`}
-                style={({ isActive }) => ({ color: isActive ? '#6366f1' : '#64748b', background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent' })}>
+                style={({ isActive }) => navStyle(isActive)}>
                 {label}
               </NavLink>
             ))}
-            <Link to="/contact" className="btn-primary mt-3 justify-center">Get in touch</Link>
+            <div className="flex items-center gap-2 mt-2 pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
+              {LANGS.map(l => (
+                <button key={l.code} onClick={() => changeLang(l.code)}
+                  className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors"
+                  style={{ background: i18n.language === l.code ? 'rgba(99,102,241,0.1)' : 'var(--bg-3)', borderColor: 'var(--border)', color: i18n.language === l.code ? '#6366f1' : 'var(--text-muted)' }}>
+                  {l.flag} {l.label}
+                </button>
+              ))}
+              <button onClick={toggle}
+                className="ml-auto w-9 h-9 rounded-xl flex items-center justify-center border"
+                style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
+                {isDark ? '☀️' : '🌙'}
+              </button>
+            </div>
+            <Link to="/contact" className="btn-primary mt-2 justify-center">{t('nav.getInTouch')}</Link>
           </div>
         </div>
       </header>
 
       <main className="flex-1 pt-[68px]"><Outlet /></main>
 
-      <footer className="mt-24 border-t" style={{ background: '#fff', borderColor: '#e2e8f0' }}>
+      {/* Footer */}
+      <footer className="mt-24 border-t" style={{ background: 'var(--footer-bg)', borderColor: 'var(--border)' }}>
         <div className="section py-16">
           <div className="flex flex-col md:flex-row items-start justify-between gap-12">
             <div className="max-w-xs">
@@ -91,31 +188,31 @@ export default function Layout() {
                   cleanstack
                 </span>
               </Link>
-              <p className="text-[14px] leading-relaxed text-slate-500">
+              <p className="text-[14px] leading-relaxed text-muted">
                 A lean software development studio building fast, production-ready digital products.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-12">
               <div>
-                <p className="text-[12px] font-bold tracking-widest uppercase mb-5 text-indigo-500">Pages</p>
+                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>{t('footer.pages')}</p>
                 <ul className="space-y-3">
                   {navLinks.map(({ to, label }) => (
-                    <li key={to}><Link to={to} className="text-[15px] text-slate-500 hover:text-indigo-600 transition-colors">{label}</Link></li>
+                    <li key={to}><Link to={to} className="text-[15px] text-muted hover:text-indigo-500 transition-colors">{label}</Link></li>
                   ))}
                 </ul>
               </div>
               <div>
-                <p className="text-[12px] font-bold tracking-widest uppercase mb-5 text-indigo-500">Contact</p>
+                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>{t('footer.contact')}</p>
                 <ul className="space-y-3">
-                  <li className="text-[15px] text-slate-500">hello@cleanstack.dev</li>
-                  <li className="text-[15px] text-slate-500">Remote — worldwide</li>
+                  <li className="text-[15px] text-muted">hello@cleanstack.dev</li>
+                  <li className="text-[15px] text-muted">Remote — worldwide</li>
                 </ul>
               </div>
             </div>
           </div>
-          <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[13px] text-slate-400">© {new Date().getFullYear()} Cleanstack Studio. All rights reserved.</p>
-            <p className="text-[13px] text-slate-300">Built with React · TypeScript · Tailwind</p>
+          <div className="mt-12 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderColor: 'var(--border)' }}>
+            <p className="text-[13px] text-faint">© {new Date().getFullYear()} Cleanstack Studio. {t('footer.rights')}</p>
+            <p className="text-[13px] text-faint">{t('footer.built')}</p>
           </div>
         </div>
       </footer>
