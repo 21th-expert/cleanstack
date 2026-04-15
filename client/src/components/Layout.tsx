@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
+import Logo from './Logo';
 
 const navLinks = [
   { to: '/services', label: 'Services' },
@@ -26,11 +27,13 @@ export default function Layout() {
         style={scrolled ? { background: 'rgba(248,250,255,0.95)', borderColor: '#e2e8f0', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' } : {}}>
         <nav className="section h-[68px] flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <span className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform"
-              style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>
-              <span className="text-white text-[10px] font-bold">CS</span>
+            <span className="group-hover:scale-105 transition-transform duration-200 inline-flex drop-shadow-sm">
+              <Logo size={36} />
             </span>
-            <span className="text-[15px] font-bold tracking-tight text-slate-800">cleanstack</span>
+            <span className="text-[16px] font-bold tracking-tight"
+              style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              cleanstack
+            </span>
           </Link>
 
           <ul className="hidden md:flex items-center gap-1">
@@ -82,10 +85,11 @@ export default function Layout() {
           <div className="flex flex-col md:flex-row items-start justify-between gap-12">
             <div className="max-w-xs">
               <Link to="/" className="flex items-center gap-2.5 mb-5">
-                <span className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>
-                  <span className="text-white text-[9px] font-bold">CS</span>
+                <Logo size={30} />
+                <span className="text-[15px] font-bold"
+                  style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                  cleanstack
                 </span>
-                <span className="text-[15px] font-bold text-slate-800">cleanstack</span>
               </Link>
               <p className="text-[14px] leading-relaxed text-slate-500">
                 A lean software development studio building fast, production-ready digital products.

@@ -116,4 +116,17 @@
   .border-subtle { border-color: #e2e8f0; }
   .bg-surface  { background: #f8faff; }
   .bg-surface-2{ background: #eff6ff; }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 20s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
 }

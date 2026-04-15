@@ -82,6 +82,15 @@ const fadeUp = {
 };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 
+function AnimatedHeroBg() {
+  return (
+    <div className="absolute inset-0 w-full h-full animate-gradient-shift"
+      style={{
+        background: 'linear-gradient(160deg, #eff6ff 0%, #eef2ff 50%, #f0f9ff 100%)',
+        backgroundSize: '400% 400%',
+      }} />
+  );
+}
 function ProjectCard({ p, i }: { p: typeof featuredProjects[0]; i: number }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -153,12 +162,9 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(160deg,#eff6ff 0%,#eef2ff 50%,#f0f9ff 100%)' }}>
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle,#3b82f6,transparent 70%)' }} />
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle,#6366f1,transparent 70%)' }} />
+      <section className="relative overflow-hidden">
+        <AnimatedHeroBg />
+        <div className="absolute inset-0 bg-grid-pattern opacity-0 pointer-events-none" />
 
         <div className="section relative pt-32 pb-40">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
