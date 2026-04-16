@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
+}
+
 model Service {
   id          String   @id @default(uuid())
   title       String
@@ -22,9 +31,9 @@ model Project {
   id          String   @id @default(uuid())
   name        String
   description String
-  imageUrl    String?
   techStack   String[]
-  link        String?
+  imageUrl    String?
+  projectUrl  String?
   createdAt   DateTime @default(now())
 
   @@map("projects")
