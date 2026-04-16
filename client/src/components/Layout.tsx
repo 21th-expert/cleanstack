@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import Logo from './Logo';
 
-const LANGS = [
-  { code: 'en', label: 'EN', flag: '🇬🇧' },
-  { code: 'tr', label: 'TR', flag: '🇹🇷' },
-  { code: 'de', label: 'DE', flag: '🇩🇪' },
+const navLinks = [
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/about',    label: 'About' },
+  { to: '/contact',  label: 'Contact' },
 ];
+
+const navStyle = (isActive: boolean) => ({
+  color: isActive ? '#6366f1' : 'var(--text-muted)',
+  background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent',
+});
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
-  const { t, i18n } = useTranslation();
   const { theme, toggle } = useTheme();
   const isDark = theme === 'dark';
 
@@ -24,27 +27,7 @@ export default function Layout() {
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
-  useEffect(() => { setOpen(false); setLangOpen(false); }, [location]);
-
-  const navLinks = [
-    { to: '/services', label: t('nav.services') },
-    { to: '/projects', label: t('nav.projects') },
-    { to: '/about',    label: t('nav.about') },
-    { to: '/contact',  label: t('nav.contact') },
-  ];
-
-  const currentLang = LANGS.find(l => l.code === i18n.language) || LANGS[0];
-
-  const changeLang = (code: string) => {
-    i18n.changeLanguage(code);
-    localStorage.setItem('lang', code);
-    setLangOpen(false);
-  };
-
-  const navStyle = (isActive: boolean) => ({
-    color: isActive ? '#6366f1' : 'var(--text-muted)',
-    background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent',
-  });
+  useEffect(() => { setOpen(false); }, [location]);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
@@ -81,35 +64,6 @@ export default function Layout() {
           {/* Right controls */}
           <div className="flex items-center gap-2">
 
-            {/* Language switcher */}
-            <div className="relative hidden md:block">
-              <button
-                onClick={() => setLangOpen(v => !v)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[13px] font-semibold transition-all duration-150 border"
-                style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
-                <span>{currentLang.flag}</span>
-                <span>{currentLang.label}</span>
-                <svg className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {langOpen && (
-                <div className="absolute right-0 top-full mt-2 rounded-xl border overflow-hidden shadow-lg z-50 min-w-[100px]"
-                  style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-                  {LANGS.map(l => (
-                    <button key={l.code} onClick={() => changeLang(l.code)}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium transition-colors text-left"
-                      style={{
-                        background: i18n.language === l.code ? 'rgba(99,102,241,0.1)' : 'transparent',
-                        color: i18n.language === l.code ? '#6366f1' : 'var(--text-muted)',
-                      }}>
-                      <span>{l.flag}</span><span>{l.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Theme toggle */}
             <button onClick={toggle}
               className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-150 hover:scale-105"
@@ -128,7 +82,7 @@ export default function Layout() {
 
             {/* CTA */}
             <Link to="/contact" className="hidden md:inline-flex btn-primary !px-5 !py-2.5 !text-[14px]">
-              {t('nav.getInTouch')}
+              Get in touch
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -146,7 +100,7 @@ export default function Layout() {
         </nav>
 
         {/* Mobile menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-96' : 'max-h-0'}`}>
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-80' : 'max-h-0'}`}>
           <div className="px-6 py-5 flex flex-col gap-1 border-t" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             {navLinks.map(({ to, label }) => (
               <NavLink key={to} to={to}
@@ -155,21 +109,14 @@ export default function Layout() {
                 {label}
               </NavLink>
             ))}
-            <div className="flex items-center gap-2 mt-2 pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
-              {LANGS.map(l => (
-                <button key={l.code} onClick={() => changeLang(l.code)}
-                  className="flex items-center gap-1 px-3 py-2 rounded-xl text-[13px] font-semibold border transition-colors"
-                  style={{ background: i18n.language === l.code ? 'rgba(99,102,241,0.1)' : 'var(--bg-3)', borderColor: 'var(--border)', color: i18n.language === l.code ? '#6366f1' : 'var(--text-muted)' }}>
-                  {l.flag} {l.label}
-                </button>
-              ))}
+            <div className="flex items-center justify-between mt-2 pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
               <button onClick={toggle}
-                className="ml-auto w-9 h-9 rounded-xl flex items-center justify-center border"
+                className="w-9 h-9 rounded-xl flex items-center justify-center border"
                 style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
                 {isDark ? '☀️' : '🌙'}
               </button>
+              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2">Get in touch</Link>
             </div>
-            <Link to="/contact" className="btn-primary mt-2 justify-center">{t('nav.getInTouch')}</Link>
           </div>
         </div>
       </header>
@@ -194,7 +141,7 @@ export default function Layout() {
             </div>
             <div className="flex flex-col sm:flex-row gap-12">
               <div>
-                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>{t('footer.pages')}</p>
+                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>Pages</p>
                 <ul className="space-y-3">
                   {navLinks.map(({ to, label }) => (
                     <li key={to}><Link to={to} className="text-[15px] text-muted hover:text-indigo-500 transition-colors">{label}</Link></li>
@@ -202,7 +149,7 @@ export default function Layout() {
                 </ul>
               </div>
               <div>
-                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>{t('footer.contact')}</p>
+                <p className="text-[12px] font-bold tracking-widest uppercase mb-5" style={{ color: '#6366f1' }}>Contact</p>
                 <ul className="space-y-3">
                   <li className="text-[15px] text-muted">hello@cleanstack.dev</li>
                   <li className="text-[15px] text-muted">Remote — worldwide</li>
@@ -211,8 +158,8 @@ export default function Layout() {
             </div>
           </div>
           <div className="mt-12 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderColor: 'var(--border)' }}>
-            <p className="text-[13px] text-faint">© {new Date().getFullYear()} Cleanstack Studio. {t('footer.rights')}</p>
-            <p className="text-[13px] text-faint">{t('footer.built')}</p>
+            <p className="text-[13px] text-faint">© {new Date().getFullYear()} Cleanstack Studio. All rights reserved.</p>
+            <p className="text-[13px] text-faint">Built with React · TypeScript · Tailwind</p>
           </div>
         </div>
       </footer>

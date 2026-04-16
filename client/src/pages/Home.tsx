@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import TechBadge from '../components/TechBadge';
+import DevAnimation from '../components/DevAnimation';
 
 const staticServices = [
   { id: 'web',        order: '01', title: 'Web Development',   description: 'Full-stack web apps, SaaS platforms, and MVPs built with modern frameworks. Clean code, fast delivery.', techStack: ['React', 'Next.js', 'Node.js'], gradient: 'linear-gradient(135deg,#3b82f6,#6366f1)' },
@@ -41,10 +42,7 @@ const fadeUp = {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 
 function AnimatedHeroBg() {
-  return (
-    <div className="absolute inset-0 w-full h-full transition-all duration-500"
-      style={{ background: 'var(--hero-bg)' }} />
-  );
+  return <DevAnimation />;
 }
 
 function ProjectCard({ p, i }: { p: typeof featuredProjects[0]; i: number }) {
@@ -116,7 +114,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
         <AnimatedHeroBg />
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none" />
 
