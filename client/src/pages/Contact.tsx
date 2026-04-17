@@ -27,30 +27,34 @@ export default function Contact() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setErrors({});
     setStatus('loading');
-    if (!WEB3FORMS_KEY) {
-      setStatus('error');
-      return;
-    }
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      // Always save to database first (for admin messages)
+      const BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+      await fetch(`${BASE}/contact`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          name:       form.name,
-          email:      form.email,
-          message:    form.message,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-        setForm({ name: '', email: '', message: '' });
-      } else {
-        setStatus('error');
+
+      // Also send email via Web3Forms if key is configured
+      if (WEB3FORMS_KEY) {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            name:       form.name,
+            email:      form.email,
+            message:    form.message,
+          }),
+        });
+        await res.json();
       }
+
+      setStatus('success');
+      setForm({ name: '', email: '', message: '' });
     } catch (err) {
-      console.error('Web3Forms error:', err);
+      console.error('Contact error:', err);
       setStatus('error');
     }
   };
@@ -158,11 +162,7 @@ export default function Contact() {
                     <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                     </svg>
-                  <p className="text-[14px] text-red-500">
-                    {!WEB3FORMS_KEY
-                      ? 'Add VITE_WEB3FORMS_KEY to client/.env — get it free at web3forms.com'
-                      : 'Something went wrong. Please try again.'}
-                  </p>
+                  <p className="text-[14px] text-red-500">Something went wrong. Please try again.</p>
                   </div>
                 )}
                 <button type="submit" disabled={status === 'loading'}
