@@ -1,4 +1,4 @@
-import type { Service, Project, ContactForm } from '../types';
+import type { Service, Project, ContactForm, TeamMember, ValueItem } from '../types';
 
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
 
@@ -17,6 +17,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 export const api = {
   getServices: () => request<Service[]>('/services'),
   getProjects: () => request<Project[]>('/projects'),
+  getTeam: () => request<TeamMember[]>('/team'),
+  getValues: () => request<ValueItem[]>('/values'),
   submitContact: (data: ContactForm) =>
     request<{ success: boolean; id: string }>('/contact', {
       method: 'POST',

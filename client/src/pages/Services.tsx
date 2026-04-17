@@ -1,91 +1,87 @@
-import { motion, type Variants } from 'framer-motion';
+﻿import { motion, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import TechBadge from '../components/TechBadge';
+import { api } from '../api';
+import type { Service } from '../types';
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5, ease: 'easeOut' } }),
 };
 
-const services = [
+const initialServices: Service[] = [
   {
-    id: 'web', order: '01', label: 'Web Development', tagline: 'Fast, scalable, production-ready.',
-    description: 'We build full-stack web applications that are fast, maintainable, and built to scale. From landing pages to complex SaaS platforms, we own the entire stack — frontend, backend, database, and deployment.',
-    gradient: 'linear-gradient(135deg,#3b82f6,#6366f1)',
-    cardBg: '#eff6ff', borderColor: '#bfdbfe', accentColor: '#3b82f6', glowColor: 'rgba(59,130,246,0.2)',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>,
-    offerings: [
-      { title: 'SaaS Platforms',  body: 'Multi-tenant apps with auth, billing, dashboards, and role-based access.' },
-      { title: 'Marketing Sites', body: 'High-performance landing pages with animations, CMS, and SEO built in.' },
-      { title: 'Web Apps & MVPs', body: 'Rapid prototypes and production-grade apps shipped in weeks, not months.' },
-      { title: 'E-commerce',      body: 'Custom storefronts, checkout flows, and inventory systems that convert.' },
-    ],
-    techStack: ['React', 'Next.js', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS', 'Vercel'],
+    id: 'web',
+    title: 'Web Development',
+    description: 'Full-stack web applications with reliable architecture, clean UI, and performance tuned for production.',
+    techStack: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Prisma'],
+    order: 1,
+    createdAt: '',
   },
   {
-    id: 'blockchain', order: '02', label: 'Blockchain & Web3', tagline: 'Secure. Audited. On-chain.',
-    description: 'We design and build decentralized applications, smart contracts, and Web3 infrastructure. From DeFi protocols to NFT marketplaces, we write secure, gas-optimized Solidity and integrate seamlessly with modern frontends.',
-    gradient: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-    cardBg: '#eef2ff', borderColor: '#c7d2fe', accentColor: '#6366f1', glowColor: 'rgba(99,102,241,0.2)',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>,
-    offerings: [
-      { title: 'Smart Contracts', body: 'ERC-20, ERC-721, ERC-1155, custom protocols — audited and gas-optimized.' },
-      { title: 'DeFi Protocols',  body: 'AMMs, lending platforms, yield vaults, and staking mechanisms.' },
-      { title: 'NFT Platforms',   body: 'Minting, marketplace, royalty logic, and metadata pipelines.' },
-      { title: 'dApp Frontends',  body: 'Wallet-connected React apps with real-time on-chain data.' },
-    ],
-    techStack: ['Solidity', 'Hardhat', 'Foundry', 'Ethers.js', 'Wagmi', 'Solana', 'IPFS', 'The Graph'],
+    id: 'blockchain',
+    title: 'Web3 & Blockchain',
+    description: 'Decentralized applications, smart contracts, and secure wallet-connected frontend experiences.',
+    techStack: ['Solidity', 'Hardhat', 'Ethers.js', 'Wagmi'],
+    order: 2,
+    createdAt: '',
   },
   {
-    id: 'design', order: '03', label: 'UI/UX Design', tagline: 'Purposeful. Minimal. Delightful.',
-    description: 'Great software starts with great design. We create interfaces that are intuitive, beautiful, and conversion-focused. From early wireframes to polished design systems, we make sure every pixel earns its place.',
-    gradient: 'linear-gradient(135deg,#0ea5e9,#3b82f6)',
-    cardBg: '#f0f9ff', borderColor: '#bae6fd', accentColor: '#0ea5e9', glowColor: 'rgba(14,165,233,0.2)',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" /></svg>,
-    offerings: [
-      { title: 'Product Design',   body: 'End-to-end UX from user research and flows to high-fidelity Figma screens.' },
-      { title: 'Design Systems',   body: 'Scalable component libraries with tokens, variants, and documentation.' },
-      { title: 'Prototyping',      body: 'Interactive prototypes for user testing and stakeholder sign-off.' },
-      { title: 'Brand & Identity', body: 'Logos, color systems, typography, and visual language that sticks.' },
-    ],
-    techStack: ['Figma', 'Framer', 'Storybook', 'Tailwind CSS', 'Lottie', 'Principle', 'Adobe CC'],
+    id: 'design',
+    title: 'UI/UX Design',
+    description: 'Product-first design systems, polished interfaces, and user flows that convert and delight.',
+    techStack: ['Figma', 'Framer', 'Tailwind CSS', 'Storybook'],
+    order: 3,
+    createdAt: '',
   },
   {
-    id: '3d', order: '04', label: '3D & Motion', tagline: 'Immersive. Real-time. Unforgettable.',
-    description: 'We bring depth, motion, and interactivity to the web. From real-time 3D product configurators to cinematic scroll experiences, we use WebGL and modern tooling to create moments that make people stop and stare.',
-    gradient: 'linear-gradient(135deg,#38bdf8,#6366f1)',
-    cardBg: '#f0f9ff', borderColor: '#7dd3fc', accentColor: '#38bdf8', glowColor: 'rgba(56,189,248,0.2)',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>,
-    offerings: [
-      { title: '3D Web Experiences',    body: 'Interactive WebGL scenes, product viewers, and immersive hero sections.' },
-      { title: 'Product Visualization', body: 'Photorealistic 3D renders and real-time configurators for e-commerce.' },
-      { title: 'Motion & Animation',    body: 'Scroll-driven animations, micro-interactions, and cinematic transitions.' },
-      { title: '3D Modeling',           body: 'Custom assets, characters, and environments modeled and optimized for web.' },
-    ],
-    techStack: ['Three.js', 'React Three Fiber', 'Blender', 'GSAP', 'WebGL', 'Spline', 'Lottie', 'Framer Motion'],
+    id: 'motion',
+    title: '3D & Motion',
+    description: 'Immersive motion design, animated web experiences, and interactive visual storytelling.',
+    techStack: ['Three.js', 'React Three Fiber', 'GSAP', 'Framer Motion'],
+    order: 4,
+    createdAt: '',
   },
 ];
 
 const process = [
   { step: '01', title: 'Discovery', body: 'We dig into your goals, users, and constraints before writing a single line.' },
-  { step: '02', title: 'Design',    body: 'Wireframes, architecture diagrams, and a clear execution plan.' },
-  { step: '03', title: 'Build',     body: 'Iterative sprints with weekly demos and continuous feedback.' },
-  { step: '04', title: 'Ship',      body: 'Deploy, monitor, document, and hand off with full confidence.' },
+  { step: '02', title: 'Design', body: 'Wireframes, architecture diagrams, and a clear execution plan.' },
+  { step: '03', title: 'Build', body: 'Iterative sprints with weekly demos and continuous feedback.' },
+  { step: '04', title: 'Ship', body: 'Deploy, monitor, document, and hand off with full confidence.' },
 ];
 
 const faqs = [
-  { q: 'How long does a typical project take?',       a: 'Most projects run 4–12 weeks depending on scope. MVPs can ship in as little as 3 weeks.' },
-  { q: 'Do you work with early-stage startups?',      a: 'Yes — we love working with founders from day one. We can help you validate, design, and build your first product.' },
-  { q: 'Can you take over an existing codebase?',     a: 'Absolutely. We do code audits and can onboard onto your existing stack without disruption.' },
-  { q: 'Do you offer ongoing retainers?',             a: 'Yes. Many clients keep us on a monthly retainer for feature development, maintenance, and consulting.' },
-  { q: 'What chains do you support for Web3?',        a: 'Ethereum, Base, Polygon, Arbitrum, Optimism, and Solana. We can also support other EVM-compatible chains.' },
+  { q: 'How long does a typical project take?', a: 'Most projects run 4–12 weeks depending on scope. MVPs can ship in as little as 3 weeks.' },
+  { q: 'Do you work with early-stage startups?', a: 'Yes — we love working with founders from day one. We can help you validate, design, and build your first product.' },
+  { q: 'Can you take over an existing codebase?', a: 'Absolutely. We do code audits and can onboard onto your existing stack without disruption.' },
+  { q: 'Do you offer ongoing retainers?', a: 'Yes. Many clients keep us on a monthly retainer for feature development, maintenance, and consulting.' },
+  { q: 'What chains do you support for Web3?', a: 'Ethereum, Base, Polygon, Arbitrum, Optimism, and Solana. We can also support other EVM-compatible chains.' },
   { q: 'How do you handle 3D performance on mobile?', a: 'We build with progressive enhancement — full 3D on desktop, graceful fallbacks on mobile for smooth performance.' },
 ];
 
+const themeCards = [
+  { gradient: 'linear-gradient(135deg,#3b82f6,#6366f1)', cardBg: '#eff6ff', borderColor: '#bfdbfe', accentColor: '#3b82f6', glowColor: 'rgba(59,130,246,0.2)' },
+  { gradient: 'linear-gradient(135deg,#6366f1,#8b5cf6)', cardBg: '#eef2ff', borderColor: '#c7d2fe', accentColor: '#6366f1', glowColor: 'rgba(99,102,241,0.2)' },
+  { gradient: 'linear-gradient(135deg,#0ea5e9,#3b82f6)', cardBg: '#f0f9ff', borderColor: '#bae6fd', accentColor: '#0ea5e9', glowColor: 'rgba(14,165,233,0.2)' },
+  { gradient: 'linear-gradient(135deg,#38bdf8,#6366f1)', cardBg: '#f0f9ff', borderColor: '#7dd3fc', accentColor: '#38bdf8', glowColor: 'rgba(56,189,248,0.2)' },
+];
+
 export default function Services() {
+  const [services, setServices] = useState<Service[]>(initialServices);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.getServices()
+      .then((data) => setServices(data))
+      .catch((err) => setError(err.message || 'Unable to load services.'))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <>
-      {/* Hero */}
       <section className="relative overflow-hidden border-b border-subtle"
         style={{ background: 'linear-gradient(160deg,var(--bg-3) 0%,var(--bg) 60%,var(--bg) 100%)' }}>
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
@@ -102,79 +98,72 @@ export default function Services() {
               </span>
             </h1>
             <p className="mt-6 text-[17px] text-muted max-w-xl leading-relaxed">
-              From pixel-perfect interfaces to on-chain protocols and immersive 3D — we cover every layer of the modern digital product stack.
+              From pixel-perfect interfaces to on-chain protocols and immersive motion, we cover every layer of the modern digital product stack.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link to="/contact" className="btn-primary">Start a project</Link>
               <Link to="/projects" className="btn-secondary">See our work</Link>
             </div>
           </motion.div>
+
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.5 }} className="mt-14 flex flex-wrap gap-3">
-            {services.map((s) => (
-              <a key={s.id} href={`#${s.id}`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-150 border"
-                style={{ background: s.cardBg, borderColor: s.borderColor, color: s.accentColor }}>
-                <span className="w-2 h-2 rounded-full" style={{ background: s.accentColor }} />
-                {s.label}
-              </a>
-            ))}
+            {services.map((service) => {
+              const theme = themeCards[(service.order - 1) % themeCards.length];
+              return (
+                <a key={service.id} href={`#${service.id}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-150 border"
+                  style={{ background: theme.cardBg, borderColor: theme.borderColor, color: theme.accentColor }}>
+                  <span className="w-2 h-2 rounded-full" style={{ background: theme.accentColor }} />
+                  {service.title}
+                </a>
+              );
+            })}
           </motion.div>
         </div>
       </section>
 
-      {/* Service Sections */}
-      {services.map((s, si) => (
-        <section key={s.id} id={s.id} className="py-32 border-b border-subtle"
-          style={{ background: si % 2 === 1 ? 'var(--bg-3)' : 'var(--bg-2)' }}>
-          <div className="section">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-              <motion.div initial={{ opacity: 0, x: si % 2 === 0 ? -24 : 24 }}
-                whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                className={si % 2 === 1 ? 'lg:order-2' : ''}>
-                <div className="flex items-center gap-4 mb-7">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white"
-                    style={{ background: s.gradient, boxShadow: `0 4px 28px -4px ${s.glowColor}` }}>
-                    {s.icon}
-                  </div>
-                  <span className="text-[13px] font-bold tracking-widest text-muted">{s.order}</span>
-                </div>
-                <span className="text-[13px] font-bold tracking-[0.18em] uppercase" style={{ color: s.accentColor }}>{s.label}</span>
-                <h2 className="mt-3 text-[2rem] md:text-[2.4rem] font-semibold tracking-tight leading-tight heading-md" style={{ fontSize: 'clamp(1.6rem,3vw,2.4rem)' }}>{s.tagline}</h2>
-                <p className="mt-5 text-[16px] text-muted leading-relaxed">{s.description}</p>
-                <div className="mt-7 flex flex-wrap gap-2">{s.techStack.map((t) => <TechBadge key={t} label={t} />)}</div>
-                <Link to="/contact" className="mt-9 inline-flex items-center gap-2 text-[15px] font-semibold hover:opacity-75 transition-opacity" style={{ color: s.accentColor }}>
-                  Start this project
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </Link>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, x: si % 2 === 0 ? 24 : -24 }}
-                whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-                className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${si % 2 === 1 ? 'lg:order-1' : ''}`}>
-                {s.offerings.map((o, oi) => (
-                  <motion.div key={o.title} custom={oi} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-                    className="rounded-2xl p-7 border transition-all duration-200"
-                    style={{ background: 'var(--card-bg)', borderColor: s.borderColor }}
-                    onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 4px 24px -4px ${s.glowColor}`; e.currentTarget.style.borderColor = s.accentColor + '88'; }}
-                    onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = s.borderColor; }}>
-                    <div className="w-8 h-8 rounded-xl mb-5 flex items-center justify-center border"
-                      style={{ background: 'var(--bg-2)', borderColor: s.borderColor }}>
-                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: s.accentColor }} />
+      <section className="py-32 border-b border-subtle" style={{ background: 'var(--bg-2)' }}>
+        <div className="section">
+          <div className="grid gap-8 lg:grid-cols-2">
+            {loading && (
+              <div className="card p-10 col-span-full text-center">
+                <p className="text-muted">Loading services...</p>
+              </div>
+            )}
+            {error && (
+              <div className="card p-10 col-span-full text-center border border-red-200 bg-red-50 text-red-700">
+                <p>{error}</p>
+              </div>
+            )}
+            {services.map((service, index) => {
+              const theme = themeCards[index % themeCards.length];
+              return (
+                <motion.article key={service.id} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+                  className="rounded-[2rem] border p-10 transition-shadow duration-200 hover:shadow-[0_18px_80px_rgba(15,23,42,0.12)]"
+                  style={{ background: theme.cardBg, borderColor: theme.borderColor }}>
+                  <div className="mb-6 flex items-center justify-between gap-4">
+                    <div style={{ background: theme.gradient }} className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-[0_24px_56px_-28px_rgba(59,130,246,0.8)]">
+                      <span className="text-xl font-bold">{service.order}</span>
                     </div>
-                    <h4 className="font-semibold text-[15px] mb-2" style={{ color: 'var(--text)' }}>{o.title}</h4>
-                    <p className="text-[14px] text-muted leading-relaxed">{o.body}</p>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
+                    <span className="text-[13px] font-semibold uppercase tracking-[0.3em]" style={{ color: theme.accentColor }}>Service</span>
+                  </div>
+                  <h2 className="text-[1.75rem] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{service.title}</h2>
+                  <p className="mt-4 text-[15px] text-muted leading-relaxed">{service.description}</p>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {service.techStack.map((tech) => <TechBadge key={tech} label={tech} />)}
+                  </div>
+                  <Link to="/contact" className="mt-8 inline-flex items-center gap-2 text-[15px] font-semibold" style={{ color: theme.accentColor }}>
+                    Talk to us
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                  </Link>
+                </motion.article>
+              );
+            })}
           </div>
-        </section>
-      ))}
+        </div>
+      </section>
 
-      {/* Process */}
       <section className="py-32 border-b border-subtle" style={{ background: 'var(--bg-3)' }}>
         <div className="section">
           <div className="text-center mb-16">
@@ -187,8 +176,8 @@ export default function Services() {
             {process.map(({ step, title, body }, i) => (
               <motion.div key={step} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                 className="p-9 text-center transition-colors" style={{ background: 'var(--bg-2)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-3)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'var(--bg-2)')}>
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-3)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-2)')}>
                 <span className="text-[13px] font-bold tracking-widest"
                   style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   {step}
@@ -201,7 +190,6 @@ export default function Services() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="section py-32" style={{ background: 'var(--bg-2)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div>
@@ -223,7 +211,6 @@ export default function Services() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="section pb-32">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -244,8 +231,8 @@ export default function Services() {
               <Link to="/projects"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-[15px] font-medium transition-all"
                 style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.85)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
                 View our work
               </Link>
             </div>

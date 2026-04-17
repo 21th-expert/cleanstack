@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import api from '../../services/api';
 
-interface Stats { projects: number; messages: number; }
+interface Stats { projects: number; messages: number; services: number; team: number; values: number; }
 
 const StatCard = ({ label, value, icon, color }: { label: string; value: number; icon: React.ReactNode; color: string }) => (
   <div className="card p-6 flex items-center gap-5">
@@ -50,6 +50,15 @@ export default function Dashboard() {
             <StatCard label="Total Messages" value={stats?.messages ?? 0} color="linear-gradient(135deg,#0ea5e9,#6366f1)"
               icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
             />
+            <StatCard label="Total Services" value={stats?.services ?? 0} color="linear-gradient(135deg,#10b981,#3b82f6)"
+              icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>}
+            />
+            <StatCard label="Team members" value={stats?.team ?? 0} color="linear-gradient(135deg,#f97316,#fb7185)"
+              icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-1a4 4 0 00-4-4h-1M9 20H4v-1a4 4 0 014-4h1m8-3a4 4 0 11-8 0 4 4 0 018 0zm-6 5a6 6 0 0112 0v1" /></svg>}
+            />
+            <StatCard label="Values" value={stats?.values ?? 0} color="linear-gradient(135deg,#8b5cf6,#4f46e5)"
+              icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3M5.05 11a7 7 0 0113.9 0 7 7 0 01-13.9 0z" /></svg>}
+            />
           </div>
         )}
 
@@ -58,6 +67,8 @@ export default function Dashboard() {
           <div className="space-y-2">
             {[
               { to: '/admin/projects', label: 'Manage Projects', desc: 'Create, edit, delete projects' },
+              { to: '/admin/services', label: 'Manage Services', desc: 'Create, edit, delete services' },
+              { to: '/admin/about', label: 'Manage Team & Values', desc: 'Update the about page content' },
               { to: '/admin/messages', label: 'View Messages', desc: 'Read contact form submissions' },
             ].map(({ to, label, desc }) => (
               <Link key={to} to={to}

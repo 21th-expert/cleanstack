@@ -66,10 +66,13 @@ export const replyMessage = async (req: Request, res: Response) => {
 
 export const getDashboardStats = async (_req: Request, res: Response) => {
   try {
-    const [projects, messages] = await Promise.all([
+    const [projects, messages, services, team, values] = await Promise.all([
       prisma.project.count(),
       prisma.contact.count(),
+      prisma.service.count(),
+      prisma.teamMember.count(),
+      prisma.value.count(),
     ]);
-    res.json({ projects, messages });
+    res.json({ projects, messages, services, team, values });
   } catch { res.status(500).json({ error: 'Failed to fetch stats' }); }
 };

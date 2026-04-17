@@ -22,3 +22,21 @@ export interface ContactForm {
   email: string;
   message: string;
 }
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  photoUrl: string | null;
+  order: number;
+  createdAt: string;
+}
+
+export interface ValueItem {
+  id: string;
+  icon: string;
+  title: string;
+  body: string;
+  order: number;
+  createdAt: string;
+}

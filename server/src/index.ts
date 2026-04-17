@@ -6,6 +6,8 @@ import projectsRoutes from './routes/projects.routes';
 import contactRoutes from './routes/contact.routes';
 import authRoutes from './routes/auth.routes';
 import adminRoutes from './routes/admin.routes';
+import teamRoutes from './routes/team.routes';
+import valuesRoutes from './routes/values.routes';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/services', servicesRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/values', valuesRoutes);
 
 // Auth
 app.use('/api/auth', authRoutes);

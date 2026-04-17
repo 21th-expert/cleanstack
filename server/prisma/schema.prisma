@@ -39,6 +39,28 @@ model Project {
   @@map("projects")
 }
 
+model TeamMember {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  photoUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("team_members")
+}
+
+model Value {
+  id        String   @id @default(uuid())
+  icon      String
+  title     String
+  body      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("values")
+}
+
 model Contact {
   id        String   @id @default(uuid())
   name      String

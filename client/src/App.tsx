@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProjects from './pages/admin/Projects';
+import AdminServices from './pages/admin/Services';
+import AdminAbout from './pages/admin/About';
 import AdminMessages from './pages/admin/Messages';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -37,6 +39,8 @@ export default function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/projects" element={<ProtectedRoute><AdminProjects /></ProtectedRoute>} />
+        <Route path="/admin/services" element={<ProtectedRoute><AdminServices /></ProtectedRoute>} />
+        <Route path="/admin/about" element={<ProtectedRoute><AdminAbout /></ProtectedRoute>} />
         <Route path="/admin/messages" element={<ProtectedRoute><AdminMessages /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
