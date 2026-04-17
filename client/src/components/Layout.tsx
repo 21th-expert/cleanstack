@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 
 const navLinks = [
-  { to: '/services', labelKey: 'nav.services' },
-  { to: '/projects', labelKey: 'nav.projects' },
-  { to: '/about', labelKey: 'nav.about' },
-  { to: '/contact', labelKey: 'nav.contact' },
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/about',    label: 'About' },
+  { to: '/contact',  label: 'Contact' },
 ];
 
 const navStyle = (isActive: boolean) => ({
@@ -21,7 +20,6 @@ export default function Layout() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { theme, toggle } = useTheme();
-  const { t, i18n } = useTranslation();
   const isDark = theme === 'dark';
 
   useEffect(() => {
@@ -38,8 +36,6 @@ export default function Layout() {
         style={scrolled ? { background: 'var(--nav-bg)', borderColor: 'var(--border)', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' } : {}}
       >
         <nav className="section h-[68px] flex items-center justify-between gap-4">
-
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group shrink-0">
             <span className="group-hover:scale-105 transition-transform duration-200 inline-flex drop-shadow-sm">
               <Logo size={36} />
@@ -50,23 +46,19 @@ export default function Layout() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-1">
-            {navLinks.map(({ to, labelKey }) => (
+            {navLinks.map(({ to, label }) => (
               <li key={to}>
                 <NavLink to={to}
                   className={({ isActive }) => `px-4 py-2.5 text-[15px] rounded-xl transition-all duration-150 ${isActive ? 'font-semibold' : ''}`}
                   style={({ isActive }) => navStyle(isActive)}>
-                  {t(labelKey)}
+                  {label}
                 </NavLink>
               </li>
             ))}
           </ul>
 
-          {/* Right controls */}
           <div className="flex items-center gap-2">
-
-            {/* Theme toggle */}
             <button onClick={toggle}
               className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-150 hover:scale-105"
               style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
@@ -82,30 +74,13 @@ export default function Layout() {
               )}
             </button>
 
-            {/* Language selector */}
-            <select
-              value={i18n.language}
-              onChange={(e) => i18n.changeLanguage(e.target.value)}
-              className="w-20 h-10 rounded-xl border transition-all duration-150 hover:scale-105"
-              style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
-            >
-              <option value="en">EN</option>
-              <option value="de">DE</option>
-              <option value="pl">PL</option>
-              <option value="fr">FR</option>
-              <option value="es">ES</option>
-              <option value="ru">RU</option>
-            </select>
-
-            {/* CTA */}
             <Link to="/contact" className="hidden md:inline-flex btn-primary !px-5 !py-2.5 !text-[14px]">
-              {t('nav.getInTouch')}
+              Get in touch
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
 
-            {/* Hamburger */}
             <button className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl transition-colors"
               style={{ background: open ? 'rgba(99,102,241,0.08)' : 'transparent' }}
               onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -116,14 +91,13 @@ export default function Layout() {
           </div>
         </nav>
 
-        {/* Mobile menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-80' : 'max-h-0'}`}>
           <div className="px-6 py-5 flex flex-col gap-1 border-t" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
-            {navLinks.map(({ to, labelKey }) => (
+            {navLinks.map(({ to, label }) => (
               <NavLink key={to} to={to}
                 className={({ isActive }) => `px-4 py-3 text-[15px] rounded-xl transition-colors ${isActive ? 'font-semibold' : ''}`}
                 style={({ isActive }) => navStyle(isActive)}>
-                {t(labelKey)}
+                {label}
               </NavLink>
             ))}
             <div className="flex items-center justify-between mt-2 pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
@@ -132,7 +106,7 @@ export default function Layout() {
                 style={{ background: 'var(--bg-3)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}>
                 {isDark ? '☀️' : '🌙'}
               </button>
-              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2">{t('nav.getInTouch')}</Link>
+              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2">Get in touch</Link>
             </div>
           </div>
         </div>
@@ -140,7 +114,6 @@ export default function Layout() {
 
       <main className="flex-1 pt-[68px]"><Outlet /></main>
 
-      {/* Footer */}
       <footer className="mt-24 border-t" style={{ background: 'var(--footer-bg)', borderColor: 'var(--border)' }}>
         <div className="section py-16">
           <div className="flex flex-col md:flex-row items-start justify-between gap-12">

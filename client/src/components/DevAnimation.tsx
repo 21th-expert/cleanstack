@@ -23,7 +23,6 @@ interface FloatingTag {
   text: string; opacity: number; color: string; size: number;
 }
 
-const KEYWORDS = ['const', 'function', 'return', 'import', 'export', 'async', 'await', 'class', 'interface', 'type'];
 const TAGS = ['React', 'TypeScript', 'Node.js', 'Solidity', 'Three.js', 'GraphQL', 'Docker', 'AWS', 'Prisma', 'Next.js', 'WebGL', 'GSAP', 'Figma', 'Tailwind'];
 const TERMINAL_LINES = [
   '$ npm run dev', '> cleanstack@1.0.0 dev', '> vite --host',

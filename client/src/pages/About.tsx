@@ -35,7 +35,7 @@ export default function About() {
         <div className="absolute -top-32 right-0 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#6366f1,transparent 70%)' }} />
         <div className="section relative pt-28 pb-24">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <span className="label">Who we are</span>
             <h1 className="mt-4 heading-lg">About Cleanstack</h1>
             <p className="mt-5 text-[17px] text-muted max-w-lg leading-relaxed">A lean studio of engineers and designers who care deeply about craft.</p>
@@ -46,7 +46,7 @@ export default function About() {
       {/* Story + Mission */}
       <section className="section py-28" style={{ background: 'var(--bg-2)' }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <span className="label">Our story</span>
             <h2 className="mt-4 text-[1.9rem] font-semibold mb-7" style={{ color: 'var(--text)' }}>Built by engineers, for builders</h2>
             <div className="space-y-5 text-[16px] text-muted leading-[1.85]">
@@ -56,7 +56,7 @@ export default function About() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} className="space-y-5">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }} className="space-y-5">
             <div className="card-gradient p-8">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-[13px] font-bold" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>M</div>

@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import TechBadge from '../components/TechBadge';
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
-  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] } }),
+  show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5, ease: 'easeOut' } }),
 };
 
 const services = [
@@ -94,7 +94,7 @@ export default function Services() {
 
         <div className="section relative pt-28 pb-28">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="max-w-3xl">
+            transition={{ duration: 0.6, ease: 'easeOut' }} className="max-w-3xl">
             <span className="label">What we offer</span>
             <h1 className="mt-4 heading-lg">Services built for<br />
               <span style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1,#8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
@@ -131,7 +131,7 @@ export default function Services() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
               <motion.div initial={{ opacity: 0, x: si % 2 === 0 ? -24 : 24 }}
                 whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
                 className={si % 2 === 1 ? 'lg:order-2' : ''}>
                 <div className="flex items-center gap-4 mb-7">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white"
@@ -152,7 +152,7 @@ export default function Services() {
 
               <motion.div initial={{ opacity: 0, x: si % 2 === 0 ? 24 : -24 }}
                 whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${si % 2 === 1 ? 'lg:order-1' : ''}`}>
                 {s.offerings.map((o, oi) => (
                   <motion.div key={o.title} custom={oi} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
@@ -226,7 +226,7 @@ export default function Services() {
       {/* CTA */}
       <section className="section pb-32">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }} transition={{ duration: 0.6, ease: 'easeOut' }}
           className="relative rounded-3xl overflow-hidden px-12 py-24 text-center border border-indigo-200"
           style={{ background: 'linear-gradient(135deg,#1e3a8a 0%,#3730a3 40%,#4f46e5 100%)' }}>
           <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />

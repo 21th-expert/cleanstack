@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -69,7 +69,7 @@ export default function Contact() {
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#6366f1,transparent 70%)' }} />
         <div className="section relative pt-28 pb-24">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <span className="label">Get in touch</span>
             <h1 className="mt-4 heading-lg">Let's work together</h1>
             <p className="mt-5 text-[17px] text-muted max-w-lg leading-relaxed">Tell us about your project. We respond within 24 hours.</p>
@@ -80,7 +80,7 @@ export default function Contact() {
       <section className="section py-24" style={{ background: 'var(--bg-2)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="lg:col-span-2 space-y-8">
+            transition={{ duration: 0.6, ease: 'easeOut' }} className="lg:col-span-2 space-y-8">
             {[
               { icon: '✉️', label: 'Email',         value: 'hello@cleanstack.dev' },
               { icon: '📍', label: 'Location',      value: 'Remote — worldwide' },
@@ -118,7 +118,7 @@ export default function Contact() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} className="lg:col-span-3">
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }} className="lg:col-span-3">
             {status === 'success' ? (
               <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="card-gradient p-16 text-center">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
