@@ -40,12 +40,14 @@ model Project {
 }
 
 model TeamMember {
-  id        String   @id @default(uuid())
-  name      String
-  role      String
-  photoUrl  String?
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
+  id           String   @id @default(uuid())
+  name         String
+  role         String
+  photoUrl     String?
+  portfolioUrl String?
+  githubUrl    String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
 
   @@map("team_members")
 }

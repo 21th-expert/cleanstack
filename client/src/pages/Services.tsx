@@ -113,7 +113,7 @@ export default function Services() {
               return (
                 <a key={service.id} href={`#${service.id}`}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-150 border"
-                  style={{ background: theme.cardBg, borderColor: theme.borderColor, color: theme.accentColor }}>
+                  style={{ background: 'var(--bg-2)', borderColor: theme.accentColor + '22', color: theme.accentColor }}>
                   <span className="w-2 h-2 rounded-full" style={{ background: theme.accentColor }} />
                   {service.title}
                 </a>
@@ -141,7 +141,7 @@ export default function Services() {
               return (
                 <motion.article key={service.id} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
                   className="rounded-[2rem] border p-10 transition-shadow duration-200 hover:shadow-[0_18px_80px_rgba(15,23,42,0.12)]"
-                  style={{ background: theme.cardBg, borderColor: theme.borderColor }}>
+                  style={{ background: 'var(--card-bg)', borderColor: 'var(--border)' }}>
                   <div className="mb-6 flex items-center justify-between gap-4">
                     <div style={{ background: theme.gradient }} className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-[0_24px_56px_-28px_rgba(59,130,246,0.8)]">
                       <span className="text-xl font-bold">{service.order}</span>

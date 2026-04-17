@@ -11,7 +11,7 @@ export const getAdminTeam = async (_req: Request, res: Response) => {
 };
 
 export const createTeamMember = async (req: Request, res: Response) => {
-  const { name, role, photoUrl, order } = req.body;
+  const { name, role, photoUrl, portfolioUrl, githubUrl, order } = req.body;
   if (!name || !role) {
     res.status(400).json({ error: 'Name and role are required' });
     return;
@@ -23,6 +23,8 @@ export const createTeamMember = async (req: Request, res: Response) => {
         name,
         role,
         photoUrl,
+        portfolioUrl,
+        githubUrl,
         order: Number(order) || 0,
       },
     });
@@ -34,7 +36,7 @@ export const createTeamMember = async (req: Request, res: Response) => {
 
 export const updateTeamMember = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, role, photoUrl, order } = req.body;
+  const { name, role, photoUrl, portfolioUrl, githubUrl, order } = req.body;
 
   try {
     const member = await prisma.teamMember.update({
@@ -43,6 +45,8 @@ export const updateTeamMember = async (req: Request, res: Response) => {
         name,
         role,
         photoUrl,
+        portfolioUrl,
+        githubUrl,
         order: Number(order) || 0,
       },
     });
@@ -81,7 +85,7 @@ export const createValue = async (req: Request, res: Response) => {
   try {
     const value = await prisma.value.create({
       data: {
-        icon: icon || '◆',
+        icon: icon || '?',
         title,
         body,
         order: Number(order) || 0,

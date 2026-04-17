@@ -28,6 +28,8 @@ export interface TeamMember {
   name: string;
   role: string;
   photoUrl: string | null;
+  portfolioUrl: string | null;
+  githubUrl: string | null;
   order: number;
   createdAt: string;
 }
