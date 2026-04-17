@@ -46,6 +46,7 @@ model TeamMember {
   photoUrl     String?
   portfolioUrl String?
   githubUrl    String?
+  skills       String[]
   order        Int      @default(0)
   createdAt    DateTime @default(now())
 

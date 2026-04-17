@@ -11,7 +11,7 @@ export const getAdminTeam = async (_req: Request, res: Response) => {
 };
 
 export const createTeamMember = async (req: Request, res: Response) => {
-  const { name, role, photoUrl, portfolioUrl, githubUrl, order } = req.body;
+  const { name, role, photoUrl, portfolioUrl, githubUrl, skills, order } = req.body;
   if (!name || !role) {
     res.status(400).json({ error: 'Name and role are required' });
     return;
@@ -25,6 +25,7 @@ export const createTeamMember = async (req: Request, res: Response) => {
         photoUrl,
         portfolioUrl,
         githubUrl,
+        skills: skills || [],
         order: Number(order) || 0,
       },
     });
@@ -36,7 +37,7 @@ export const createTeamMember = async (req: Request, res: Response) => {
 
 export const updateTeamMember = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, role, photoUrl, portfolioUrl, githubUrl, order } = req.body;
+  const { name, role, photoUrl, portfolioUrl, githubUrl, skills, order } = req.body;
 
   try {
     const member = await prisma.teamMember.update({
@@ -47,6 +48,7 @@ export const updateTeamMember = async (req: Request, res: Response) => {
         photoUrl,
         portfolioUrl,
         githubUrl,
+        skills: skills || [],
         order: Number(order) || 0,
       },
     });

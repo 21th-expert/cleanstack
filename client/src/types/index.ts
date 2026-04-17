@@ -30,6 +30,7 @@ export interface TeamMember {
   photoUrl: string | null;
   portfolioUrl: string | null;
   githubUrl: string | null;
+  skills: string[];
   order: number;
   createdAt: string;
 }

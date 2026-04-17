@@ -3,7 +3,7 @@ import Sidebar from '../../components/Sidebar';
 import api from '../../services/api';
 import type { TeamMember, ValueItem } from '../../types';
 
-const emptyTeam = { name: '', role: '', photoUrl: '', portfolioUrl: '', githubUrl: '', order: '0' };
+const emptyTeam = { name: '', role: '', photoUrl: '', portfolioUrl: '', githubUrl: '', skills: '', order: '0' };
 const emptyValue = { icon: '', title: '', body: '', order: '0' };
 const defaultValueIcon = '*';
 
@@ -62,7 +62,7 @@ export default function AdminAbout() {
   };
 
   const openTeamEdit = (member: TeamMember) => {
-    setTeamForm({ name: member.name, role: member.role, photoUrl: member.photoUrl || '', portfolioUrl: member.portfolioUrl || '', githubUrl: member.githubUrl || '', order: String(member.order ?? 0) });
+    setTeamForm({ name: member.name, role: member.role, photoUrl: member.photoUrl || '', portfolioUrl: member.portfolioUrl || '', githubUrl: member.githubUrl || '', skills: member.skills.join(', '), order: String(member.order ?? 0) });
     setEditTeamId(member.id);
     setError('');
     setTeamModal('edit');
@@ -96,6 +96,7 @@ export default function AdminAbout() {
       photoUrl: teamForm.photoUrl.trim() || null,
       portfolioUrl: teamForm.portfolioUrl.trim() || null,
       githubUrl: teamForm.githubUrl.trim() || null,
+      skills: teamForm.skills.trim() ? teamForm.skills.split(',').map(s => s.trim()).filter(s => s) : [],
       order: Number(teamForm.order) || 0,
     };
 
@@ -207,7 +208,7 @@ export default function AdminAbout() {
                 <table className="w-full text-[14px]">
                   <thead>
                     <tr className="border-b" style={{ borderColor: 'var(--border)', background: 'var(--bg-3)' }}>
-                      {['Name', 'Role', 'Photo URL', 'Portfolio URL', 'GitHub URL', 'Order', 'Actions'].map(h => (
+                      {['Name', 'Role', 'Skills', 'Portfolio URL', 'GitHub URL', 'Order', 'Actions'].map(h => (
                         <th key={h} className="text-left px-4 py-3 text-[12px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>{h}</th>
                       ))}
                     </tr>
@@ -217,7 +218,7 @@ export default function AdminAbout() {
                       <tr key={member.id} className="border-b" style={{ borderColor: 'var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg-3)' }}>
                         <td className="px-4 py-3.5 font-semibold" style={{ color: 'var(--text)' }}>{member.name}</td>
                         <td className="px-4 py-3.5 text-muted">{member.role}</td>
-                        <td className="px-4 py-3.5 text-muted truncate max-w-xs">{member.photoUrl || '-'}</td>
+                        <td className="px-4 py-3.5 text-muted truncate max-w-xs">{member.skills.length > 0 ? member.skills.join(', ') : '-'}</td>
                         <td className="px-4 py-3.5 text-muted truncate max-w-xs">{member.portfolioUrl || '-'}</td>
                         <td className="px-4 py-3.5 text-muted truncate max-w-xs">{member.githubUrl || '-'}</td>
                         <td className="px-4 py-3.5 text-muted">{member.order}</td>
@@ -309,7 +310,7 @@ export default function AdminAbout() {
                       const photo = member.photoUrl;
                       return (
                         <div key={`${member.name}-${member.role}-${i}`} className="rounded-3xl overflow-hidden border" style={{ background: 'var(--bg-2)', borderColor: 'var(--border)' }}>
-                          <div className="w-full h-48 overflow-hidden bg-[var(--bg-3)] flex items-center justify-center">
+                          <div className="w-full h-80 overflow-hidden bg-[var(--bg-3)] flex items-center justify-center">
                             {photo ? (
                               <img src={photo} alt={member.name} className="w-full h-full object-cover" />
                             ) : (
@@ -318,9 +319,34 @@ export default function AdminAbout() {
                               </div>
                             )}
                           </div>
-                          <div className="p-5">
-                            <p className="font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{member.name}</p>
-                            <p className="text-[14px] text-muted mt-1 leading-relaxed">{member.role}</p>
+                          <div className="p-6 space-y-4">
+                            <div>
+                              <p className="font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{member.name}</p>
+                              <p className="text-[14px] text-muted mt-1 leading-relaxed">{member.role}</p>
+                            </div>
+                            {member.skills && member.skills.length > 0 && (
+                              <div className="flex flex-wrap gap-2">
+                                {member.skills.map((skill) => (
+                                  <span key={skill} className="text-[12px] font-medium px-2.5 py-1 rounded-full" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            {(member.portfolioUrl || member.githubUrl) && (
+                              <div className="flex gap-3 pt-2">
+                                {member.portfolioUrl && (
+                                  <a href={member.portfolioUrl} target="_blank" rel="noopener noreferrer" className="flex-1 px-3 py-2 rounded-lg text-[13px] font-medium text-center transition-colors" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                                    Portfolio
+                                  </a>
+                                )}
+                                {member.githubUrl && (
+                                  <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1 px-3 py-2 rounded-lg text-[13px] font-medium text-center transition-colors" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                                    GitHub
+                                  </a>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </div>
                       );
@@ -356,7 +382,6 @@ export default function AdminAbout() {
                   {[
                     { label: 'Name *', key: 'name', placeholder: 'Full name' },
                     { label: 'Role *', key: 'role', placeholder: 'Role or title' },
-                    { label: 'Photo URL', key: 'photoUrl', placeholder: 'https://...' },
                     { label: 'Portfolio URL', key: 'portfolioUrl', placeholder: 'https://...' },
                     { label: 'GitHub URL', key: 'githubUrl', placeholder: 'https://...' },
                   ].map(({ label, key, placeholder }) => (
@@ -370,6 +395,33 @@ export default function AdminAbout() {
                       />
                     </div>
                   ))}
+                  <div>
+                    <label className="block text-[12px] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#6366f1' }}>Photo Upload</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (ev) => {
+                            setTeamForm(f => ({ ...f, photoUrl: ev.target?.result as string }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="input-field"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[12px] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#6366f1' }}>Skills (comma-separated)</label>
+                    <input
+                      value={teamForm.skills}
+                      onChange={e => setTeamForm(f => ({ ...f, skills: e.target.value }))}
+                      placeholder="React, TypeScript, Node.js"
+                      className="input-field"
+                    />
+                  </div>
                   <div>
                     <label className="block text-[12px] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#6366f1' }}>Order</label>
                     <input type="number" value={teamForm.order} onChange={e => setTeamForm(f => ({ ...f, order: e.target.value }))} className="input-field" />

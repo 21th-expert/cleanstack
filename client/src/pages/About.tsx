@@ -10,10 +10,10 @@ import samImg from '../assets/Gentle smile and blue eyes.png';
 import morganImg from '../assets/Professional portrait on modern sofa.png';
 
 const fallbackTeam: TeamMember[] = [
-  { id: 'fallback-1', name: 'Alex Rivera', role: 'Founder & Lead Engineer', photoUrl: alexImg, portfolioUrl: null, githubUrl: null, order: 1, createdAt: '' },
-  { id: 'fallback-2', name: 'Jordan Lee', role: 'Full-Stack Developer', photoUrl: jordanImg, portfolioUrl: null, githubUrl: null, order: 2, createdAt: '' },
-  { id: 'fallback-3', name: 'Sam Chen', role: 'UI/UX Designer', photoUrl: samImg, portfolioUrl: null, githubUrl: null, order: 3, createdAt: '' },
-  { id: 'fallback-4', name: 'Morgan Blake', role: 'DevOps Engineer', photoUrl: morganImg, portfolioUrl: null, githubUrl: null, order: 4, createdAt: '' },
+  { id: 'fallback-1', name: 'Alex Rivera', role: 'Founder & Lead Engineer', photoUrl: alexImg, portfolioUrl: null, githubUrl: null, skills: [], order: 1, createdAt: '' },
+  { id: 'fallback-2', name: 'Jordan Lee', role: 'Full-Stack Developer', photoUrl: jordanImg, portfolioUrl: null, githubUrl: null, skills: [], order: 2, createdAt: '' },
+  { id: 'fallback-3', name: 'Sam Chen', role: 'UI/UX Designer', photoUrl: samImg, portfolioUrl: null, githubUrl: null, skills: [], order: 3, createdAt: '' },
+  { id: 'fallback-4', name: 'Morgan Blake', role: 'DevOps Engineer', photoUrl: morganImg, portfolioUrl: null, githubUrl: null, skills: [], order: 4, createdAt: '' },
 ];
 
 const fallbackValues: ValueItem[] = [
@@ -118,12 +118,37 @@ export default function About() {
             const photo = member.photoUrl || fallbackPhotos[i % fallbackPhotos.length];
             return (
               <motion.div key={`${member.name}-${member.role}-${i}`} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="card overflow-hidden group">
-                <div className="w-full h-64 overflow-hidden">
+                <div className="w-full h-80 overflow-hidden">
                   <img src={photo} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="p-5">
-                  <p className="font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{member.name}</p>
-                  <p className="text-[14px] text-faint mt-1 leading-relaxed">{member.role}</p>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <p className="font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{member.name}</p>
+                    <p className="text-[14px] text-muted mt-1 leading-relaxed">{member.role}</p>
+                  </div>
+                  {member.skills && member.skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {member.skills.map((skill) => (
+                        <span key={skill} className="text-[12px] font-medium px-2.5 py-1 rounded-full" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {(member.portfolioUrl || member.githubUrl) && (
+                    <div className="flex gap-3 pt-2">
+                      {member.portfolioUrl && (
+                        <a href={member.portfolioUrl} target="_blank" rel="noopener noreferrer" className="flex-1 px-3 py-2 rounded-lg text-[13px] font-medium text-center transition-colors" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                          Portfolio
+                        </a>
+                      )}
+                      {member.githubUrl && (
+                        <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1 px-3 py-2 rounded-lg text-[13px] font-medium text-center transition-colors" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                          GitHub
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );
