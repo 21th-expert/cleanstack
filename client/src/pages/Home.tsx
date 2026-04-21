@@ -130,11 +130,6 @@ export default function Home() {
         <div className="section relative pt-32 pb-40">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }} className="max-w-4xl">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.4 }} className="badge mb-10">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse-slow" />
-              Available for new projects
-            </motion.div>
             <h1 className="heading-xl">
               We build software<br />
               <span className="gradient-text">that ships.</span>
