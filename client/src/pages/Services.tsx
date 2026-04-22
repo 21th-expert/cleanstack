@@ -143,8 +143,8 @@ export default function Services() {
                   className="rounded-[2rem] border p-10 transition-shadow duration-200 hover:shadow-[0_18px_80px_rgba(15,23,42,0.12)]"
                   style={{ background: 'var(--card-bg)', borderColor: 'var(--border)' }}>
                   <div className="mb-6 flex items-center justify-between gap-4">
-                    <div style={{ background: theme.gradient }} className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-[0_24px_56px_-28px_rgba(59,130,246,0.8)]">
-                      <span className="text-xl font-bold">{service.order}</span>
+                    <div style={{ background: theme.gradient }} className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-[0_24px_56px_-28px_rgba(59,130,246,0.8)]">
+                      <img src="/favicon.svg" alt={`${service.title} icon`} className="w-8 h-8 object-contain" />
                     </div>
                     <span className="text-[13px] font-semibold uppercase tracking-[0.3em]" style={{ color: theme.accentColor }}>Service</span>
                   </div>
@@ -178,10 +178,10 @@ export default function Services() {
                 className="p-9 text-center transition-colors" style={{ background: 'var(--bg-2)' }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-3)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-2)')}>
-                <span className="text-[13px] font-bold tracking-widest"
-                  style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                  {step}
-                </span>
+                <div className="mx-auto w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>
+                  <img src="/favicon.svg" alt={`${title} icon`} className="w-6 h-6 object-contain" />
+                </div>
                 <h4 className="mt-3 font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{title}</h4>
                 <p className="mt-2 text-[14px] text-muted leading-relaxed">{body}</p>
               </motion.div>

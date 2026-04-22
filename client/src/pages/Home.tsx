@@ -189,9 +189,9 @@ export default function Home() {
                 className="card p-8 group flex flex-col"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#c7d2fe'; e.currentTarget.style.boxShadow = '0 8px 32px -8px rgba(99,102,241,0.15)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.boxShadow = 'var(--card-shadow)'; }}>
-                <div className="w-12 h-12 rounded-2xl mb-6 flex items-center justify-center text-white text-[11px] font-bold group-hover:scale-105 transition-transform"
+                <div className="w-12 h-12 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-105 transition-transform"
                   style={{ background: s.gradient, boxShadow: '0 4px 16px -4px rgba(99,102,241,0.35)' }}>
-                  {s.order}
+                  <img src="/favicon.svg" alt={`${s.title} icon`} className="w-7 h-7 object-contain" />
                 </div>
                 <h3 className="font-semibold text-[16px] mb-3" style={{ color: 'var(--text)' }}>{s.title}</h3>
                 <p className="text-[14px] text-muted leading-relaxed flex-1">{s.description}</p>
