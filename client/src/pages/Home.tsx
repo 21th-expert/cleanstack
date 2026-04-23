@@ -40,6 +40,47 @@ const stats = [
 
 const techLogos = ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Next.js', 'Docker', 'AWS', 'Prisma', 'GraphQL', 'Tailwind', 'Solidity', 'Three.js'];
 
+function getServiceSymbol(id: string) {
+  switch (id) {
+    case 'web':
+      return (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-2 2 2 2m8-4 2 2-2 2m-5-5-2 6" />
+        </svg>
+      );
+    case 'blockchain':
+      return (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8l3 1.7v3.6L12 15l-3-1.7V9.7L12 8z" />
+        </svg>
+      );
+    case 'design':
+      return (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <circle cx="8" cy="8" r="3" />
+          <circle cx="16" cy="8" r="3" />
+          <circle cx="8" cy="16" r="3" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 19a3 3 0 100-6h-1" />
+        </svg>
+      );
+    case '3d':
+      return (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m7-14-7 4-7-4" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9L12 3z" />
+        </svg>
+      );
+  }
+}
+
 function ProjectCard({ p, i }: { p: Project; i: number }) {
   const c = COLORS[i % COLORS.length];
   const [loaded, setLoaded] = useState(false);
@@ -191,7 +232,7 @@ export default function Home() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.boxShadow = 'var(--card-shadow)'; }}>
                 <div className="w-12 h-12 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-105 transition-transform"
                   style={{ background: s.gradient, boxShadow: '0 4px 16px -4px rgba(99,102,241,0.35)' }}>
-                  <img src="/favicon.svg" alt={`${s.title} icon`} className="w-7 h-7 object-contain" />
+                  {getServiceSymbol(s.id)}
                 </div>
                 <h3 className="font-semibold text-[16px] mb-3" style={{ color: 'var(--text)' }}>{s.title}</h3>
                 <p className="text-[14px] text-muted leading-relaxed flex-1">{s.description}</p>

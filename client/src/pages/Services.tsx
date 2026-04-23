@@ -68,6 +68,85 @@ const themeCards = [
   { gradient: 'linear-gradient(135deg,#38bdf8,#6366f1)', cardBg: '#f0f9ff', borderColor: '#7dd3fc', accentColor: '#38bdf8', glowColor: 'rgba(56,189,248,0.2)' },
 ];
 
+function getServiceSymbol(id: string) {
+  switch (id) {
+    case 'web':
+      return (
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-2 2 2 2m8-4 2 2-2 2m-5-5-2 6" />
+        </svg>
+      );
+    case 'blockchain':
+      return (
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8l3 1.7v3.6L12 15l-3-1.7V9.7L12 8z" />
+        </svg>
+      );
+    case 'design':
+      return (
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <circle cx="8" cy="8" r="3" />
+          <circle cx="16" cy="8" r="3" />
+          <circle cx="8" cy="16" r="3" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 19a3 3 0 100-6h-1" />
+        </svg>
+      );
+    case 'motion':
+      return (
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m7-14-7 4-7-4" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9L12 3z" />
+        </svg>
+      );
+  }
+}
+
+function getProcessSymbol(step: string) {
+  switch (step) {
+    case '01':
+      return (
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+          <circle cx="12" cy="12" r="8" />
+          <circle cx="12" cy="12" r="2.5" />
+        </svg>
+      );
+    case '02':
+      return (
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 17l6-6 4 4 6-8" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h5v5" />
+        </svg>
+      );
+    case '03':
+      return (
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 6h14M5 12h14M5 18h8" />
+        </svg>
+      );
+    case '04':
+      return (
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13 6l6 6-6 6" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9}>
+          <circle cx="12" cy="12" r="8" />
+        </svg>
+      );
+  }
+}
+
 export default function Services() {
   const [services, setServices] = useState<Service[]>(initialServices);
   const [loading, setLoading] = useState(true);
@@ -144,7 +223,7 @@ export default function Services() {
                   style={{ background: 'var(--card-bg)', borderColor: 'var(--border)' }}>
                   <div className="mb-6 flex items-center justify-between gap-4">
                     <div style={{ background: theme.gradient }} className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-[0_24px_56px_-28px_rgba(59,130,246,0.8)]">
-                      <img src="/favicon.svg" alt={`${service.title} icon`} className="w-8 h-8 object-contain" />
+                      {getServiceSymbol(service.id)}
                     </div>
                     <span className="text-[13px] font-semibold uppercase tracking-[0.3em]" style={{ color: theme.accentColor }}>Service</span>
                   </div>
@@ -180,7 +259,7 @@ export default function Services() {
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-2)')}>
                 <div className="mx-auto w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)' }}>
-                  <img src="/favicon.svg" alt={`${title} icon`} className="w-6 h-6 object-contain" />
+                  {getProcessSymbol(step)}
                 </div>
                 <h4 className="mt-3 font-semibold text-[16px]" style={{ color: 'var(--text)' }}>{title}</h4>
                 <p className="mt-2 text-[14px] text-muted leading-relaxed">{body}</p>
