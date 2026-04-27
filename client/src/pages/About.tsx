@@ -52,7 +52,7 @@ export default function About() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <span className="label">Who we are</span>
             <h1 className="mt-4 heading-lg">About Cleanstack</h1>
-            <p className="mt-5 text-[17px] text-muted max-w-lg leading-relaxed">A lean studio of engineers and designers who care deeply about craft.</p>
+            <p className="mt-5 text-[17px] text-muted max-w-lg leading-relaxed">Cleanstack is a modern software development company focused on building scalable, high-performance digital solutions for startups, enterprises, and forward-thinking businesses. We specialize in transforming complex ideas into clean, efficient, and user-centered products that deliver real-world impact.</p>
           </motion.div>
         </div>
       </section>
