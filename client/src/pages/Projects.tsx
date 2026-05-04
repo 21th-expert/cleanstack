@@ -96,7 +96,7 @@ function ProjectImage({ src, alt, gradient, letter, bgGlow }: {
 }
 
 export default function Projects() {
-  const { theme, toggle } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
 
   return (
@@ -118,24 +118,7 @@ export default function Projects() {
                 <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse-slow" />
                 Inspiration & partners
               </span>
-              <button
-                type="button"
-                onClick={toggle}
-                className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-all hover:-translate-y-px"
-                style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
-                aria-label="Toggle projects page theme"
-              >
-                {isDark ? (
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                  </svg>
-                ) : (
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                )}
-                {isDark ? 'Light style' : 'Dark style'}
-              </button>
+
             </div>
             <h1 className="text-5xl md:text-6xl font-semibold tracking-tight leading-tight" style={{ color: 'var(--text)' }}>
               Studios we admire<br />
