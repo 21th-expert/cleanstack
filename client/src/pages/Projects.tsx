@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -71,8 +72,8 @@ function ProjectImage({ src, alt, gradient, letter, bgGlow }: {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   return (
-    <div className="relative w-full h-56 overflow-hidden bg-slate-50"
-      style={{ background: `linear-gradient(135deg,${bgGlow},#f8faff 80%)` }}>
+    <div className="relative w-full h-56 overflow-hidden"
+      style={{ background: `linear-gradient(135deg,${bgGlow},var(--bg-3) 80%)` }}>
       <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
         style={{ opacity: loaded && !error ? 0 : 1 }}>
         <span className="text-[6rem] font-black select-none leading-none"
@@ -95,33 +96,55 @@ function ProjectImage({ src, alt, gradient, letter, bgGlow }: {
 }
 
 export default function Projects() {
+  const { theme, toggle } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-slate-100"
-        style={{ background: 'linear-gradient(135deg,#1e3a8a 0%,#1e40af 40%,#3730a3 100%)' }}>
-        <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
+      <section className="relative overflow-hidden border-b"
+        style={{ background: 'var(--hero-bg)', borderColor: 'var(--border)' }}>
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none" />
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#60a5fa,transparent 70%)' }} />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none"
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle,#818cf8,transparent 70%)' }} />
 
         <div className="section relative pt-28 pb-24">
           <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }} className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[13px] font-semibold mb-8"
-              style={{ borderColor: 'rgba(147,197,253,0.3)', background: 'rgba(59,130,246,0.15)', color: '#93c5fd' }}>
-              <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse-slow" />
-              Inspiration & partners
-            </span>
-            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight leading-tight text-white">
+            <div className="mb-8 flex flex-wrap items-center gap-3">
+              <span className="badge">
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse-slow" />
+                Inspiration & partners
+              </span>
+              <button
+                type="button"
+                onClick={toggle}
+                className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-all hover:-translate-y-px"
+                style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+                aria-label="Toggle projects page theme"
+              >
+                {isDark ? (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                  </svg>
+                ) : (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+                {isDark ? 'Light style' : 'Dark style'}
+              </button>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight leading-tight" style={{ color: 'var(--text)' }}>
               Studios we admire<br />
               <span style={{ background: 'linear-gradient(90deg,#93c5fd,#c4b5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 & learn from.
               </span>
             </h1>
-            <p className="mt-6 text-[17px] max-w-xl leading-relaxed" style={{ color: '#bfdbfe' }}>
-              We design and deliver production-ready products—not just prototypes.
+            <p className="mt-6 text-[17px] max-w-xl leading-relaxed text-muted">
+              We design and deliver production-ready products - not just prototypes.
               From early-stage MVPs to scalable platforms, our team has successfully shipped web applications used by real customers in real environments.
               Each project reflects our focus on performance, usability, and long-term maintainability.            </p>
           </motion.div>
@@ -130,13 +153,12 @@ export default function Projects() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-5 max-w-2xl">
             {stats.map(({ value, label }) => (
-              <div key={label} className="rounded-2xl p-5 border"
-                style={{ background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.15)' }}>
-                <p className="text-2xl font-bold tracking-tight"
-                  style={{ background: 'linear-gradient(135deg,#93c5fd,#c4b5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <div key={label} className="rounded-2xl p-5 border transition-colors"
+                style={{ background: 'var(--card-bg)', borderColor: 'var(--card-border)', boxShadow: 'var(--card-shadow)' }}>
+                <p className="text-2xl font-bold tracking-tight gradient-text">
                   {value}
                 </p>
-                <p className="text-[13px] mt-1 text-blue-200">{label}</p>
+                <p className="text-[13px] mt-1 text-faint">{label}</p>
               </div>
             ))}
           </motion.div>
@@ -144,7 +166,7 @@ export default function Projects() {
       </section>
 
       {/* Grid */}
-      <section className="py-24" style={{ background: '#f8faff' }}>
+      <section className="py-24" style={{ background: 'var(--bg-2)' }}>
         <div className="section">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((p, i) => (
@@ -152,9 +174,9 @@ export default function Projects() {
                 whileInView="show" viewport={{ once: true, margin: '-40px' }}
                 variants={fadeUp}
                 className="group relative rounded-3xl overflow-hidden border cursor-pointer transition-all duration-300"
-                style={{ background: '#fff', borderColor: '#e2e8f0', boxShadow: '0 1px 8px rgba(0,0,0,0.05)' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#bfdbfe'; e.currentTarget.style.boxShadow = '0 8px 32px -8px rgba(99,102,241,0.18)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 1px 8px rgba(0,0,0,0.05)'; }}>
+                style={{ background: 'var(--card-bg)', borderColor: 'var(--card-border)', boxShadow: 'var(--card-shadow)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = p.accentColor + '66'; e.currentTarget.style.boxShadow = 'var(--shadow-secondary)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.boxShadow = 'var(--card-shadow)'; }}>
 
                 <div className="relative">
                   <ProjectImage src={p.image} alt={p.name}
@@ -162,13 +184,13 @@ export default function Projects() {
                     bgGlow={p.bgGlow} />
 
                   <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border z-10"
-                    style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderColor: p.accentColor + '33', color: p.accentColor }}>
+                    style={{ background: isDark ? 'rgba(15,17,23,0.82)' : 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderColor: p.accentColor + '33', color: p.accentColor }}>
                     {p.tag}
                   </span>
 
                   <a href={p.link} target="_blank" rel="noopener noreferrer"
                     className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[12px] font-semibold border transition-all opacity-0 group-hover:opacity-100 z-10"
-                    style={{ background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderColor: p.accentColor + '33', color: p.accentColor }}
+                    style={{ background: isDark ? 'rgba(15,17,23,0.82)' : 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderColor: p.accentColor + '33', color: p.accentColor }}
                     onClick={e => e.stopPropagation()}>
                     <span className="w-1.5 h-1.5 rounded-full animate-pulse-slow" style={{ background: p.accentColor }} />
                     Visit
@@ -185,7 +207,7 @@ export default function Projects() {
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div>
                       <p className="text-[12px] font-semibold uppercase tracking-widest mb-1" style={{ color: p.accentColor }}>{p.category}</p>
-                      <h3 className="text-[18px] font-bold text-slate-800">{p.name}</h3>
+                      <h3 className="text-[18px] font-bold" style={{ color: 'var(--text)' }}>{p.name}</h3>
                     </div>
                     <a href={p.link} target="_blank" rel="noopener noreferrer"
                       className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border transition-all hover:scale-105"
@@ -196,7 +218,7 @@ export default function Projects() {
                     </a>
                   </div>
 
-                  <p className="text-[14px] text-slate-500 leading-relaxed mb-5">{p.description}</p>
+                  <p className="text-[14px] text-muted leading-relaxed mb-5">{p.description}</p>
 
                   <div className="flex flex-wrap gap-1.5">
                     {p.techStack.map((t) => (
@@ -214,12 +236,12 @@ export default function Projects() {
       </section>
 
       {/* CTA */}
-      <section className="py-24" style={{ background: '#f8faff' }}>
+      <section className="py-24" style={{ background: 'var(--bg-2)' }}>
         <div className="section">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6, ease: 'easeOut' }}
             className="relative rounded-3xl overflow-hidden px-10 py-20 text-center border border-indigo-200"
-            style={{ background: 'linear-gradient(135deg,#1e3a8a 0%,#3730a3 50%,#4f46e5 100%)' }}>
+            style={{ background: 'var(--gradient-cta)', borderColor: 'var(--border-2)' }}>
             <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 blur-3xl opacity-30 pointer-events-none"
               style={{ background: 'linear-gradient(90deg,#60a5fa,#818cf8)' }} />
