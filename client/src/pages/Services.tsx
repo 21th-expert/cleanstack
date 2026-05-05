@@ -70,42 +70,11 @@ const themeCards = [
 
 function getServiceSymbol(id: string) {
   switch (id) {
-    case 'web':
-      return (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-          <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10l-2 2 2 2m8-4 2 2-2 2m-5-5-2 6" />
-        </svg>
-      );
-    case 'blockchain':
-      return (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8l3 1.7v3.6L12 15l-3-1.7V9.7L12 8z" />
-        </svg>
-      );
-    case 'design':
-      return (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-          <circle cx="8" cy="8" r="3" />
-          <circle cx="16" cy="8" r="3" />
-          <circle cx="8" cy="16" r="3" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M16 19a3 3 0 100-6h-1" />
-        </svg>
-      );
-    case 'motion':
-      return (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m7-14-7 4-7-4" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9L12 3z" />
-        </svg>
-      );
+    case 'web': return <span className="text-3xl">🌐</span>;
+    case 'blockchain': return <span className="text-3xl">⛓️</span>;
+    case 'design': return <span className="text-3xl">🎨</span>;
+    case 'motion': return <span className="text-3xl">🎬</span>;
+    default: return <span className="text-3xl">⚡</span>;
   }
 }
 
