@@ -62,7 +62,7 @@ const projects = [
 const stats = [
   { value: '6', label: 'Featured studios' },
   { value: '4', label: 'Service areas' },
-  { value: '30+', label: 'Happy clients' },
+  { value: '50+', label: 'Happy clients' },
   { value: '100%', label: 'On-time delivery' },
 ];
 
